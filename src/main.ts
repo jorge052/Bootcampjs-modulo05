@@ -1,9 +1,12 @@
 import "./style.css";
 
 let puntuacion = 0;
-const nuevaCarta = document.getElementById("dameCarta");
+let gameOver = false;
 
+const nuevaCarta = document.getElementById("dameCarta");
+const plantarseButton = document.getElementById("plantarse");
 const mostraPuntuacionElemento = document.getElementById("mostrarPuntuacion");
+const nuevaPartidaButton = document.getElementById("nuevaPartida");
 
 document.addEventListener("DOMContentLoaded", function () {
   muestraPuntuacion();
@@ -17,7 +20,7 @@ function muestraPuntuacion() {
   }
 }
 
-// Bloque de codigo para obtener nueva carta
+// Bloque de codigo para obtener nueva carta y Game over
 
 function dameCarta() {
   const numeroCarta = Math.floor(Math.random() * 10) + 1;
@@ -27,15 +30,66 @@ function dameCarta() {
   return numeroCarta;
 }
 
-function mostrarCartaNueva() {
-  const cartaNueva = dameCarta();
-  console.log("Carta elegida:", cartaNueva);
-  mostrarCarta(cartaNueva);
-  sumarPuntuacion(cartaNueva);
-}
-
 if (nuevaCarta instanceof HTMLButtonElement) {
   nuevaCarta.addEventListener("click", mostrarCartaNueva);
+}
+
+function mostrarCartaNueva() {
+  if (!gameOver) {
+    const cartaNueva = dameCarta();
+    console.log("Carta elegida:", cartaNueva);
+    mostrarCarta(cartaNueva);
+    sumarPuntuacion(cartaNueva);
+
+    if (puntuacion > 7.5) {
+      gameOver = true;
+      mostrarMensaje("Game Over");
+    }
+  }
+}
+
+function mostrarMensaje(mensaje: string) {
+  const fin = document.getElementById("gameOver");
+  if (fin) {
+    fin.innerHTML = `${mensaje}`;
+  }
+}
+
+// Bloque de codigo para plantarse
+
+if (plantarseButton instanceof HTMLButtonElement) {
+  plantarseButton.addEventListener("click", plantarse);
+}
+
+function plantarse() {
+  if (!gameOver) {
+    gameOver = true;
+    let mensaje = "";
+
+    if (puntuacion < 4) {
+      mensaje = "Has sido muy conservador";
+    } else if (puntuacion >= 4 && puntuacion < 6) {
+      mensaje = "Te ha entrado el canguelo eh?";
+    } else if (puntuacion >= 6 && puntuacion <= 7) {
+      mensaje = "Casi casí...";
+    } else if (puntuacion === 7.5) {
+      mensaje = "¡Lo has clavado! ¡Enhorabuena!";
+    }
+
+    mostrarMensaje(mensaje);
+  }
+}
+
+// Bloque de codigo para Nueva partida
+
+if (nuevaPartidaButton instanceof HTMLButtonElement) {
+  nuevaPartidaButton.addEventListener("click", iniciarNuevaPartida);
+}
+
+function iniciarNuevaPartida() {
+  puntuacion = 0;
+  gameOver = false;
+  muestraPuntuacion();
 }
 
 // Funcion para sumar puntos
@@ -43,6 +97,9 @@ if (nuevaCarta instanceof HTMLButtonElement) {
 function sumarPuntuacion(cartaValor: number) {
   puntuacion += cartaValor; // Sumar el valor de la carta a la puntuación total
   muestraPuntuacion(); // Actualizar la  puntuación
+  if (puntuacion > 7.5) {
+    gameOver = true;
+  }
 }
 
 // Funcion para mostrar cartas
