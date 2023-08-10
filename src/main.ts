@@ -2,9 +2,12 @@ import "./style.css";
 
 let puntuacion = 0;
 let gameOver = false;
+let partidaTerminada = false;
+let siguienteCarta: number;
 
 const nuevaCarta = document.getElementById("dameCarta");
-const plantarseButton = document.getElementById("plantarse");
+const plantarseboton = document.getElementById("plantarse");
+const saberMasButton = document.getElementById("saberMas");
 const mostraPuntuacionElemento = document.getElementById("mostrarPuntuacion");
 const nuevaPartidaButton = document.getElementById("nuevaPartida");
 
@@ -43,7 +46,9 @@ function mostrarCartaNueva() {
 
     if (puntuacion > 7.5) {
       gameOver = true;
+      partidaTerminada = true;
       mostrarMensaje("Game Over");
+      determinarFinPartida();
     }
   }
 }
@@ -57,8 +62,8 @@ function mostrarMensaje(mensaje: string) {
 
 // Bloque de codigo para plantarse
 
-if (plantarseButton instanceof HTMLButtonElement) {
-  plantarseButton.addEventListener("click", plantarse);
+if (plantarseboton instanceof HTMLButtonElement) {
+  plantarseboton.addEventListener("click", plantarse);
 }
 
 function plantarse() {
@@ -77,10 +82,27 @@ function plantarse() {
     }
 
     mostrarMensaje(mensaje);
+    determinarFinPartida();
+    mostrarBotonSabermas();
   }
 }
 
-// Bloque de codigo para Nueva partida
+// Saber mas
+
+function mostrarSiguienteCarta() {
+  if (siguienteCarta !== null) {
+    mostrarCarta(siguienteCarta);
+  }
+}
+
+function mostrarBotonSabermas() {
+  if (saberMasButton instanceof HTMLButtonElement) {
+    saberMasButton.addEventListener("click", mostrarSiguienteCarta);
+    saberMasButton.style.display = "block";
+  }
+}
+
+// Bloque de codigo para Nueva partida y terminar partida.
 
 if (nuevaPartidaButton instanceof HTMLButtonElement) {
   nuevaPartidaButton.addEventListener("click", iniciarNuevaPartida);
@@ -89,7 +111,29 @@ if (nuevaPartidaButton instanceof HTMLButtonElement) {
 function iniciarNuevaPartida() {
   puntuacion = 0;
   gameOver = false;
+  partidaTerminada = false;
   muestraPuntuacion();
+  ocultarBotonNuevaPartida();
+}
+
+function determinarFinPartida() {
+  if (gameOver || partidaTerminada) {
+    mostrarBotonNuevaPartida();
+  }
+}
+
+// Desactivar botones
+
+function ocultarBotonNuevaPartida() {
+  if (nuevaPartidaButton) {
+    nuevaPartidaButton.style.display = "none";
+  }
+}
+
+function mostrarBotonNuevaPartida() {
+  if (nuevaPartidaButton) {
+    nuevaPartidaButton.style.display = "block";
+  }
 }
 
 // Funcion para sumar puntos
