@@ -66,14 +66,14 @@ const mostrarMensaje = (mensaje: string) => {
 
 const revisarMano = () => {
   if (puntosTotales === 7.5) {
-    mostrarMensaje("partida ganada");
+    mostrarMensaje(`partida ganada ${puntosTotales}`);
     deshabilitarBotonNuevaCarta();
     mostrarBotonNuevaPartida();
     deshabilitarBotonPlantarse();
   }
 
   if (puntosTotales > 7.5) {
-    mostrarMensaje("partida perdida");
+    mostrarMensaje(`partida perdida ${puntosTotales}`);
     deshabilitarBotonNuevaCarta();
     mostrarBotonNuevaPartida();
     deshabilitarBotonPlantarse();
