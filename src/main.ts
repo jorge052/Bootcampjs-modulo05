@@ -1,9 +1,9 @@
 import "./style.css";
 
 let puntosTotales = 0;
-/*let gameOver = false;
-let partidaTerminada = false;*/
 let siguienteCarta: number;
+let UrlCarta: string =
+  "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas";
 
 // meter todos los botones en una sola funcion *tambien cualquier interaccion con html
 
@@ -32,6 +32,34 @@ const dameCarta = () => {
   sumarPuntuacion(puntos);
   mostrarMensaje(`${puntosTotales}`);
   revisarMano();
+};
+
+// Eventlisteners
+
+const eventosBotones = () => {
+  if (
+    nuevaCarta !== null &&
+    nuevaCarta !== undefined &&
+    nuevaCarta instanceof HTMLButtonElement
+  ) {
+    nuevaCarta.addEventListener("click", dameCarta);
+  }
+
+  if (
+    plantarseboton !== null &&
+    plantarseboton !== undefined &&
+    plantarseboton instanceof HTMLButtonElement
+  ) {
+    plantarseboton.addEventListener("click", plantarse);
+  }
+
+  if (
+    nuevaPartidaButton !== null &&
+    nuevaPartidaButton !== undefined &&
+    nuevaPartidaButton instanceof HTMLButtonElement
+  ) {
+    nuevaPartidaButton.addEventListener("click", iniciarNuevaPartida);
+  }
 };
 
 const generarCarta = (numeroAletorio: number): number => {
@@ -65,13 +93,20 @@ const mostrarMensaje = (mensaje: string) => {
 };
 
 const revisarMano = () => {
+  partidaGanada();
+  partidaPerdida();
+};
+
+const partidaGanada = () => {
   if (puntosTotales === 7.5) {
     mostrarMensaje(`partida ganada ${puntosTotales}`);
     deshabilitarBotonNuevaCarta();
     mostrarBotonNuevaPartida();
     deshabilitarBotonPlantarse();
   }
+};
 
+const partidaPerdida = () => {
   if (puntosTotales > 7.5) {
     mostrarMensaje(`partida perdida ${puntosTotales}`);
     deshabilitarBotonNuevaCarta();
@@ -84,58 +119,44 @@ function iniciarNuevaPartida() {
   puntosTotales = 0;
   habilitarBotonNuevaCarta();
   habilitarBotonPlantarse();
+  const elementoImagen = document.getElementById("cartaImagen");
+  if (
+    elementoImagen !== null &&
+    elementoImagen !== undefined &&
+    elementoImagen instanceof HTMLImageElement
+  ) {
+    const urlImagen =
+      "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg";
+    elementoImagen.src = urlImagen;
+  }
 }
-
-const eventosBotones = () => {
-  if (
-    nuevaCarta !== null &&
-    nuevaCarta !== undefined &&
-    nuevaCarta instanceof HTMLButtonElement
-  ) {
-    nuevaCarta.addEventListener("click", dameCarta);
-  }
-
-  if (
-    plantarseboton !== null &&
-    plantarseboton !== undefined &&
-    plantarseboton instanceof HTMLButtonElement
-  ) {
-    plantarseboton.addEventListener("click", plantarse);
-  }
-
-  if (
-    nuevaPartidaButton !== null &&
-    nuevaPartidaButton !== undefined &&
-    nuevaPartidaButton instanceof HTMLButtonElement
-  ) {
-    nuevaPartidaButton.addEventListener("click", iniciarNuevaPartida);
-  }
-};
 
 // Bloque de codigo para plantarse
 
 function plantarse() {
-  let mensaje = "";
-
-  if (puntosTotales < 4) {
-    mensaje = "Has sido muy conservador";
-    habilitarBotonNuevaPartida();
-  } else if (puntosTotales >= 4 && puntosTotales < 6) {
-    mensaje = "Te ha entrado el canguelo eh?";
-    habilitarBotonNuevaPartida();
-  } else if (puntosTotales >= 6 && puntosTotales <= 7) {
-    mensaje = "Casi casí...";
-    habilitarBotonNuevaPartida();
-  } else if (puntosTotales === 7.5) {
-    mensaje = "¡Lo has clavado! ¡Enhorabuena!";
-    habilitarBotonNuevaPartida();
-  }
-
-  mostrarMensaje(mensaje);
+  mensajesPlantarse();
   mostrarBotonSabermas();
   deshabilitarBotonPlantarse();
   deshabilitarBotonNuevaCarta();
 }
+
+const mensajesPlantarse = () => {
+  if (puntosTotales < 4) {
+    mostrarMensaje("Has sido muy conservador");
+    habilitarBotonNuevaPartida();
+  } else if (puntosTotales >= 4 && puntosTotales < 6) {
+    mostrarMensaje("Te ha entrado el canguelo eh?");
+    habilitarBotonNuevaPartida();
+  } else if (puntosTotales >= 6 && puntosTotales <= 7) {
+    mostrarMensaje("Casi casí...");
+    habilitarBotonNuevaPartida();
+  } else if (puntosTotales === 7.5) {
+    mostrarMensaje("¡Lo has clavado! ¡Enhorabuena!");
+    habilitarBotonNuevaPartida();
+  } else {
+    habilitarBotonNuevaPartida();
+  }
+};
 
 // Saber mas
 
@@ -153,6 +174,7 @@ function mostrarBotonSabermas() {
 }
 
 // Habilitar y deshabilitar botones
+
 const deshabilitarBotonNuevaCarta = () => {
   const botonPedirCarta = document.getElementById("dameCarta");
   if (
@@ -230,36 +252,36 @@ const mostrarCarta = (carta: number) => {
 function devolverUrlCarta(carta: number) {
   switch (carta) {
     case 1:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/1_as-copas.jpg";
+      return UrlCarta + "/copas/1_as-copas.jpg";
 
     case 2:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/2_dos-copas.jpg";
+      return UrlCarta + "/copas/2_dos-copas.jpg";
 
     case 3:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/3_tres-copas.jpg";
+      return UrlCarta + "/copas/3_tres-copas.jpg";
 
     case 4:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/4_cuatro-copas.jpg";
+      return UrlCarta + "/copas/4_cuatro-copas.jpg";
 
     case 5:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/5_cinco-copas.jpg";
+      return UrlCarta + "/copas/5_cinco-copas.jpg";
 
     case 6:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/6_seis-copas.jpg";
+      return UrlCarta + "/copas/6_seis-copas.jpg";
 
     case 7:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/7_siete-copas.jpg";
+      return UrlCarta + "/copas/7_siete-copas.jpg";
 
     case 10:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/10_sota-copas.jpg";
+      return UrlCarta + "/copas/10_sota-copas.jpg";
 
     case 11:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/11_caballo-copas.jpg";
+      return UrlCarta + "/copas/11_caballo-copas.jpg";
 
     case 12:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/12_rey-copas.jpg";
+      return UrlCarta + "/copas/12_rey-copas.jpg";
 
     default:
-      return "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg";
+      return UrlCarta + "/back.jpg";
   }
 }
