@@ -93,32 +93,35 @@ const mostrarMensaje = (mensaje: string) => {
 };
 
 const revisarMano = () => {
-  partidaGanada();
-  partidaPerdida();
+  if (puntosTotales === 7.5) {
+    partidaGanada();
+  } else if (puntosTotales > 7.5) {
+    partidaPerdida();
+  }
 };
 
 const partidaGanada = () => {
   if (puntosTotales === 7.5) {
     mostrarMensaje(`partida ganada ${puntosTotales}`);
-    deshabilitarBotonNuevaCarta();
+    deshabilitarBotonNuevaCarta(true);
     mostrarBotonNuevaPartida();
-    deshabilitarBotonPlantarse();
+    deshabilitarBotonPlantarse(true);
   }
 };
 
 const partidaPerdida = () => {
   if (puntosTotales > 7.5) {
     mostrarMensaje(`partida perdida ${puntosTotales}`);
-    deshabilitarBotonNuevaCarta();
+    deshabilitarBotonNuevaCarta(true);
     mostrarBotonNuevaPartida();
-    deshabilitarBotonPlantarse();
+    deshabilitarBotonPlantarse(true);
   }
 };
 
 function iniciarNuevaPartida() {
   puntosTotales = 0;
-  habilitarBotonNuevaCarta();
-  habilitarBotonPlantarse();
+  deshabilitarBotonNuevaCarta(false);
+  deshabilitarBotonPlantarse(false);
   const elementoImagen = document.getElementById("cartaImagen");
   if (
     elementoImagen !== null &&
@@ -136,25 +139,22 @@ function iniciarNuevaPartida() {
 function plantarse() {
   mensajesPlantarse();
   mostrarBotonSabermas();
-  deshabilitarBotonPlantarse();
-  deshabilitarBotonNuevaCarta();
+  deshabilitarBotonPlantarse(true);
+  deshabilitarBotonNuevaCarta(true);
+  habilitarBotonNuevaPartida(false);
 }
 
 const mensajesPlantarse = () => {
   if (puntosTotales < 4) {
     mostrarMensaje("Has sido muy conservador");
-    habilitarBotonNuevaPartida();
   } else if (puntosTotales >= 4 && puntosTotales < 6) {
     mostrarMensaje("Te ha entrado el canguelo eh?");
-    habilitarBotonNuevaPartida();
   } else if (puntosTotales >= 6 && puntosTotales <= 7) {
     mostrarMensaje("Casi casí...");
-    habilitarBotonNuevaPartida();
   } else if (puntosTotales === 7.5) {
     mostrarMensaje("¡Lo has clavado! ¡Enhorabuena!");
-    habilitarBotonNuevaPartida();
   } else {
-    habilitarBotonNuevaPartida();
+    console.log("error");
   }
 };
 
@@ -175,58 +175,36 @@ function mostrarBotonSabermas() {
 
 // Habilitar y deshabilitar botones
 
-const deshabilitarBotonNuevaCarta = () => {
+const deshabilitarBotonNuevaCarta = (estaDeshabilitado: boolean) => {
   const botonPedirCarta = document.getElementById("dameCarta");
   if (
     botonPedirCarta !== null &&
     botonPedirCarta !== undefined &&
     botonPedirCarta instanceof HTMLButtonElement
   ) {
-    botonPedirCarta.disabled = true;
+    botonPedirCarta.disabled = estaDeshabilitado;
   }
 };
 
-const habilitarBotonNuevaCarta = () => {
-  const botonPedirCarta = document.getElementById("dameCarta");
-  if (
-    botonPedirCarta !== null &&
-    botonPedirCarta !== undefined &&
-    botonPedirCarta instanceof HTMLButtonElement
-  ) {
-    botonPedirCarta.disabled = false;
-  }
-};
-
-const deshabilitarBotonPlantarse = () => {
+const deshabilitarBotonPlantarse = (estaDeshabilitado: boolean) => {
   const plantarseboton = document.getElementById("plantarse");
   if (
     plantarseboton !== null &&
     plantarseboton !== undefined &&
     plantarseboton instanceof HTMLButtonElement
   ) {
-    plantarseboton.disabled = true;
+    plantarseboton.disabled = estaDeshabilitado;
   }
 };
 
-const habilitarBotonPlantarse = () => {
-  const plantarseboton = document.getElementById("plantarse");
-  if (
-    plantarseboton !== null &&
-    plantarseboton !== undefined &&
-    plantarseboton instanceof HTMLButtonElement
-  ) {
-    plantarseboton.disabled = false;
-  }
-};
-
-const habilitarBotonNuevaPartida = () => {
+const habilitarBotonNuevaPartida = (estaDeshabilitado: boolean) => {
   const nuevaPartidaButton = document.getElementById("plantarse");
   if (
     nuevaPartidaButton !== null &&
     nuevaPartidaButton !== undefined &&
     nuevaPartidaButton instanceof HTMLButtonElement
   ) {
-    nuevaPartidaButton.disabled = false;
+    nuevaPartidaButton.disabled = estaDeshabilitado;
   }
 };
 function mostrarBotonNuevaPartida() {
