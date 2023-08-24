@@ -2,7 +2,7 @@ import "./style.css";
 
 let puntosTotales = 0;
 let siguienteCarta: number;
-let UrlCarta: string =
+let urlCarta: string =
   "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas";
 
 // meter todos los botones en una sola funcion *tambien cualquier interaccion con html
@@ -70,7 +70,7 @@ const generarCarta = (numeroAletorio: number): number => {
 };
 
 const devolverPuntos = (carta: number): number => {
-  if (carta > 7) {
+  if (carta < 7) {
     return carta;
   } else {
     return 0.5;
@@ -161,13 +161,16 @@ const mensajesPlantarse = () => {
 // Saber mas
 
 function mostrarSiguienteCarta() {
-  if (siguienteCarta !== null) {
-    mostrarCarta(siguienteCarta);
-  }
+  siguienteCarta = generarNumeroAleatorio();
+  mostrarCarta(siguienteCarta);
 }
 
 function mostrarBotonSabermas() {
-  if (saberMasButton instanceof HTMLButtonElement) {
+  if (
+    saberMasButton !== null &&
+    saberMasButton !== undefined &&
+    saberMasButton instanceof HTMLButtonElement
+  ) {
     saberMasButton.addEventListener("click", mostrarSiguienteCarta);
     saberMasButton.style.display = "block";
   }
@@ -207,8 +210,13 @@ const habilitarBotonNuevaPartida = (estaDeshabilitado: boolean) => {
     nuevaPartidaButton.disabled = estaDeshabilitado;
   }
 };
+
 function mostrarBotonNuevaPartida() {
-  if (nuevaPartidaButton) {
+  if (
+    nuevaPartidaButton !== null &&
+    nuevaPartidaButton !== undefined &&
+    nuevaPartidaButton instanceof HTMLButtonElement
+  ) {
     nuevaPartidaButton.style.display = "block";
   }
 }
@@ -230,36 +238,36 @@ const mostrarCarta = (carta: number) => {
 function devolverUrlCarta(carta: number) {
   switch (carta) {
     case 1:
-      return UrlCarta + "/copas/1_as-copas.jpg";
+      return urlCarta + "/copas/1_as-copas.jpg";
 
     case 2:
-      return UrlCarta + "/copas/2_dos-copas.jpg";
+      return urlCarta + "/copas/2_dos-copas.jpg";
 
     case 3:
-      return UrlCarta + "/copas/3_tres-copas.jpg";
+      return urlCarta + "/copas/3_tres-copas.jpg";
 
     case 4:
-      return UrlCarta + "/copas/4_cuatro-copas.jpg";
+      return urlCarta + "/copas/4_cuatro-copas.jpg";
 
     case 5:
-      return UrlCarta + "/copas/5_cinco-copas.jpg";
+      return urlCarta + "/copas/5_cinco-copas.jpg";
 
     case 6:
-      return UrlCarta + "/copas/6_seis-copas.jpg";
+      return urlCarta + "/copas/6_seis-copas.jpg";
 
     case 7:
-      return UrlCarta + "/copas/7_siete-copas.jpg";
+      return urlCarta + "/copas/7_siete-copas.jpg";
 
     case 10:
-      return UrlCarta + "/copas/10_sota-copas.jpg";
+      return urlCarta + "/copas/10_sota-copas.jpg";
 
     case 11:
-      return UrlCarta + "/copas/11_caballo-copas.jpg";
+      return urlCarta + "/copas/11_caballo-copas.jpg";
 
     case 12:
-      return UrlCarta + "/copas/12_rey-copas.jpg";
+      return urlCarta + "/copas/12_rey-copas.jpg";
 
     default:
-      return UrlCarta + "/back.jpg";
+      return urlCarta + "/back.jpg";
   }
 }
