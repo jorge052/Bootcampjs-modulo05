@@ -70,7 +70,7 @@ const generarCarta = (numeroAletorio: number): number => {
 };
 
 const devolverPuntos = (carta: number): number => {
-  if (carta < 7) {
+  if (carta <= 7) {
     return carta;
   } else {
     return 0.5;
@@ -122,6 +122,9 @@ function iniciarNuevaPartida() {
   puntosTotales = 0;
   deshabilitarBotonNuevaCarta(false);
   deshabilitarBotonPlantarse(false);
+  mostrarCarta(0);
+  mostrarMensaje(`${"0"}`);
+
   const elementoImagen = document.getElementById("cartaImagen");
   if (
     elementoImagen !== null &&
@@ -142,6 +145,8 @@ function plantarse() {
   deshabilitarBotonPlantarse(true);
   deshabilitarBotonNuevaCarta(true);
   habilitarBotonNuevaPartida(false);
+  mostrarBotonNuevaPartida();
+  deshabilitarBotonSabermas(false);
 }
 
 const mensajesPlantarse = () => {
@@ -163,6 +168,14 @@ const mensajesPlantarse = () => {
 function mostrarSiguienteCarta() {
   siguienteCarta = generarNumeroAleatorio();
   mostrarCarta(siguienteCarta);
+  const numeroAletorio = generarNumeroAleatorio();
+  const carta = generarCarta(numeroAletorio);
+  mostrarCarta(carta);
+  const puntos = devolverPuntos(carta);
+  sumarPuntuacion(puntos);
+  mostrarMensaje(`${puntosTotales}`);
+  revisarMano();
+  deshabilitarBotonSabermas(true);
 }
 
 function mostrarBotonSabermas() {
@@ -197,6 +210,17 @@ const deshabilitarBotonPlantarse = (estaDeshabilitado: boolean) => {
     plantarseboton instanceof HTMLButtonElement
   ) {
     plantarseboton.disabled = estaDeshabilitado;
+  }
+};
+
+const deshabilitarBotonSabermas = (estaDeshabilitado: boolean) => {
+  const saberMasButton = document.getElementById("saberMas");
+  if (
+    saberMasButton !== null &&
+    saberMasButton !== undefined &&
+    saberMasButton instanceof HTMLButtonElement
+  ) {
+    saberMasButton.disabled = estaDeshabilitado;
   }
 };
 
