@@ -101,21 +101,17 @@ const revisarMano = () => {
 };
 
 const partidaGanada = () => {
-  if (puntosTotales === 7.5) {
-    mostrarMensaje(`partida ganada ${puntosTotales}`);
-    deshabilitarBotonNuevaCarta(true);
-    mostrarBotonNuevaPartida();
-    deshabilitarBotonPlantarse(true);
-  }
+  mostrarMensaje(`partida ganada ${puntosTotales}`);
+  deshabilitarBotonNuevaCarta(true);
+  mostrarBotonNuevaPartida();
+  deshabilitarBotonPlantarse(true);
 };
 
 const partidaPerdida = () => {
-  if (puntosTotales > 7.5) {
-    mostrarMensaje(`partida perdida ${puntosTotales}`);
-    deshabilitarBotonNuevaCarta(true);
-    mostrarBotonNuevaPartida();
-    deshabilitarBotonPlantarse(true);
-  }
+  mostrarMensaje(`partida perdida ${puntosTotales}`);
+  deshabilitarBotonNuevaCarta(true);
+  mostrarBotonNuevaPartida();
+  deshabilitarBotonPlantarse(true);
 };
 
 function iniciarNuevaPartida() {
@@ -124,17 +120,6 @@ function iniciarNuevaPartida() {
   deshabilitarBotonPlantarse(false);
   mostrarCarta(0);
   mostrarMensaje(`${"0"}`);
-
-  const elementoImagen = document.getElementById("cartaImagen");
-  if (
-    elementoImagen !== null &&
-    elementoImagen !== undefined &&
-    elementoImagen instanceof HTMLImageElement
-  ) {
-    const urlImagen =
-      "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg";
-    elementoImagen.src = urlImagen;
-  }
 }
 
 // Bloque de codigo para plantarse
@@ -176,6 +161,7 @@ function mostrarSiguienteCarta() {
   mostrarMensaje(`${puntosTotales}`);
   revisarMano();
   deshabilitarBotonSabermas(true);
+  deshabilitarBotonPlantarse(true);
 }
 
 function mostrarBotonSabermas() {
